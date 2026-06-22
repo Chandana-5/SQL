@@ -272,30 +272,25 @@ SELECT * FROM record;
 -- Step 8: Delete a Record
 DELETE FROM record WHERE name = 'Riya';
 ```
+CODE:
+CREATE DATABASE records2;
+USE records2;
+CREATE TABLE records2(
+student_id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(20),
+email VARCHAR(20) UNIQUE,
+city VARCHAR(20) DEFAULT'Banglore'
+);
+INSERT INTO records2(name,email) VALUES('Akhil','akhil@gmail.com'),
+('Riya','riya@gmail.com'),
+('kiran',NULL),
+('Neha','neha@gmail.com'),
+('Rahul','rahul@gmail.come');
+SET SQL_SAFE_UPDATES=0;
+UPDATE records2
+set city='Mysore'
+WHERE name='Rahul';
+SET SQL_SAFE_UPDATES=1;
+SELECT *FROM records2
 
----
 
-## 📊 Constraints Summary Table
-
-| Constraint | Purpose | Allows NULL? | Allows Duplicates? |
-|---|---|---|---|
-| NOT NULL | Must have a value | ❌ No | ✅ Yes |
-| NULL | Value is optional | ✅ Yes | ✅ Yes |
-| UNIQUE | No duplicate values | ✅ Yes | ❌ No |
-| DEFAULT | Auto fills a value | ✅ Yes | ✅ Yes |
-| AUTO_INCREMENT | Auto generates number | ❌ No | ❌ No |
-| PRIMARY KEY | Unique row identifier | ❌ No | ❌ No |
-
----
-
-## 💡 Tips to Remember
-
-- Always use `WHERE` in UPDATE and DELETE — or all rows get affected!
-- `PRIMARY KEY = NOT NULL + UNIQUE`
-- `AUTO_INCREMENT` only works with integer columns
-- `NULL` is not zero — it means **no value**
-- Use `SET SQL_SAFE_UPDATES = 0` to fix Error 1175 in Workbench
-
----
-
-*Notes prepared on 22 June 2026 | MySQL Workbench | Samsung S24*
