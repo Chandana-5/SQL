@@ -1,0 +1,99 @@
+CREATE DATABASE Companydatas; 
+USE Companydatas; 
+
+-- 1. CREATE EMPLOYEE TABLE
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY AUTO_INCREMENT, 
+    first_name VARCHAR(20), 
+    last_name VARCHAR(20), 
+    birth_date DATE, 
+    sex VARCHAR(1), 
+    salary INT, 
+    super_id INT, 
+    branch_id INT 
+);
+INSERT INTO Employee (emp_id, first_name, last_name, birth_date, sex, salary, super_id, branch_id) 
+VALUES
+(100, 'David', 'wallace', '1967-11-17', 'M', 250000, NULL, 1),
+(101, 'jan', 'levinson', '1961-05-11', 'F', 110000, 100, 1),
+(102, 'micheal', 'scott', '1964-03-15', 'M', 750000, 100, 2),
+(103, 'angela', 'martin', '1971-06-25', 'F', 63000, 102, 2),
+(104, 'kelly', 'kappor', '1980-02-05', 'F', 55000, 102, 2),
+(105, 'stanley', 'hudson', '1958-02-05', 'M', 69000, 102, 2),
+(106, 'josh', 'porter', '1969-09-05', 'M', 78000, 100, 3),
+(107, 'andy', 'bernard', '1973-07-22', 'M', 65000, 106, 3),
+(108, 'jim', 'halpert', '1978-10-01', 'M', 71000, 106, 3);
+CREATE TABLE Branch (
+    branch_id INT PRIMARY KEY AUTO_INCREMENT, 
+    branch_name VARCHAR(50), 
+    mgr_id INT, 
+    mgr_start_date DATE, -- Fixed typo: 'mger_stat_date'
+    FOREIGN KEY (mgr_id) REFERENCES Employee(emp_id) ON DELETE SET NULL 
+);
+INSERT INTO Branch (branch_id, branch_name, mgr_id, mgr_start_date) 
+VALUES
+(1, 'corporate', 100, '2006-02-09'),
+(2, 'scranton', 102, '1992-04-06'),
+(3, 'stamford', 106, '1998-02-13');
+
+CREATE TABLE clients (
+    client_id INT PRIMARY KEY AUTO_INCREMENT, -- Added PRIMARY KEY
+    client_name VARCHAR(50), -- Increased length to fit name strings
+    branch_id INT,
+    FOREIGN KEY (branch_id) REFERENCES Branch(branch_id) -- Fixed cross-reference target
+);
+INSERT INTO clients (client_name, branch_id) 
+VALUES
+('dunmore highschool', 2),
+('lackawana country', 2),
+('fedex', 3),
+('john daly law,llc', 3),
+('scranton whitepages', 2),
+('times newspaper', 3),
+('fedex', 2);
+CREATE TABLE works_with (
+    emp_id INT, 
+    client_id INT, 
+    total_sales INT, 
+    PRIMARY KEY(emp_id, client_id) 
+);
+
+INSERT INTO works_with(emp_id,client_id,total_sales)VALUES(105,400,55000),
+(102,401,267000),
+(108,402,22500),
+(107,403,5000),
+(108,403,12000),
+(105,404,33000),
+(107,405,26000),
+(102,406,15000),
+(105,406,130000);
+CREATE TABLE Branch_supplier(
+branch_id INT ,
+supplier_name VARCHAR(20),
+supply_type VARCHAR(20)
+);
+INSERT INTO Branch_supplier(branch_id,supplier_name,supply_type) VALUES(
+2,'hammer mill','paper'),
+(2,'uni-ball','writing utensils'),
+(3,'patriot paper','paper'),
+(2,'JT forms & labels','custom forms'),
+(3,'uni-ball','writing utensils'),
+(3,'hammer mill','paper'),
+(3,'stamford labels','custom form');
+SELECT * FROM Employee;
+SELECT * FROM Branch;
+SELECT * FROM clients;
+SELECT * FROM works_with;
+SELECT * FROM Branch_supplier;
+
+
+
+
+
+
+
+
+
+
+
+
