@@ -126,5 +126,43 @@ SELECT * FROM works_with;
 SELECT * FROM Branch_supplier;
 
 
+---quries
+SELECT DISTINCT Sex FROM Employee
+
+
+SELECT COUNT(emp_id) AS total_employees 
+FROM Employee;
+
+
+SELECT COUNT(emp_id) AS females_born_after_1970 
+FROM Employee 
+WHERE sex = 'F' AND birth_date > '1970-12-31';
+
+SELECT SUM(salary) AS total_salary_payout 
+FROM Employee;
+
+SELECT AVG(salary) AS average_salary 
+FROM Employee;
+
+SELECT SUM(salary) AS total_salary_payout 
+FROM Employee;
+
+
+SELECT sex, COUNT(emp_id) AS total_count 
+FROM Employee 
+GROUP BY sex;
+
+
+SELECT emp_id, SUM(total_sales) AS total_employee_sales 
+FROM works_with 
+GROUP BY emp_id;
+
+
+SELECT emp_id, SUM(total_sales) AS total_employee_sales 
+FROM works_with 
+GROUP BY emp_id;
+
+
+
 
 
