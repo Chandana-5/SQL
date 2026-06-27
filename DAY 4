@@ -1,0 +1,163 @@
+# MySQL — JOINs, UNION & Nested Queries
+
+> My notes from today's SQL learning session 🚀
+
+---
+
+## 1. JOINs
+
+Combines rows from two or more tables based on a related column.
+
+### INNER JOIN
+Returns only rows that **match in both tables**.
+
+```sql
+SELECT employees.name, departments.dept_name
+FROM employees
+INNER JOIN departments ON employees.dept_id = departments.dept_id;
+```
+> Frank (no department) won't appear — no match, no row.
+
+---
+
+### LEFT JOIN
+Returns **all rows from left table** + matched rows from right (NULL if no match).
+
+```sql
+SELECT employees.name, departments.dept_name
+FROM employees
+LEFT JOIN departments ON employees.dept_id = departments.dept_id;
+```
+> Frank appears with NULL as department.
+
+---
+
+### RIGHT JOIN
+Returns **all rows from right table** + matched rows from left.
+
+```sql
+SELECT employees.name, departments.dept_name
+FROM employees
+RIGHT JOIN departments ON employees.dept_id = departments.dept_id;
+```
+> Finance (no employees) appears with NULL as employee.
+
+---
+
+### SELF JOIN
+A table **joined with itself**. Useful for hierarchical data like managers.
+
+```sql
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.emp_id;
+```
+
+---
+
+### CROSS JOIN
+Every row from Table A paired with every row from Table B.
+
+```sql
+SELECT employees.name, departments.dept_name
+FROM employees
+CROSS JOIN departments;
+-- 6 employees × 4 departments = 24 rows
+```
+
+---
+
+## 2. UNION
+
+Combines results of two SELECT statements into one.
+
+### UNION — removes duplicates
+```sql
+SELECT name FROM employees WHERE salary > 80000
+UNION
+SELECT name FROM employees WHERE dept_id = 1;
+```
+
+### UNION ALL — keeps duplicates (faster)
+```sql
+SELECT name FROM employees WHERE salary > 80000
+UNION ALL
+SELECT name FROM employees WHERE dept_id = 1;
+```
+
+> **Rule:** Both SELECTs must have the same number of columns.
+
+---
+
+## 3. Nested Queries (Subqueries)
+
+A query inside another query. Inner query runs first.
+
+### Subquery in WHERE
+```sql
+-- Employees earning more than average salary
+SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+```
+
+---
+
+### Subquery with IN
+```sql
+-- Employees in the same department as Charlie
+SELECT name FROM employees
+WHERE dept_id IN (
+    SELECT dept_id FROM employees WHERE name = 'Charlie'
+);
+```
+
+---
+
+### Subquery in FROM (Derived Table)
+Treats inner query result as a temporary table.
+
+```sql
+SELECT dept_name, avg_salary
+FROM (
+    SELECT d.dept_name, AVG(e.salary) AS avg_salary
+    FROM employees e
+    JOIN departments d ON e.dept_id = d.dept_id
+    GROUP BY d.dept_name
+) AS dept_avg
+WHERE avg_salary > 70000;
+```
+
+---
+
+### EXISTS
+Returns rows where the subquery finds **at least one match**.
+
+```sql
+-- Departments that have employees
+SELECT dept_name FROM departments d
+WHERE EXISTS (
+    SELECT 1 FROM employees e WHERE e.dept_id = d.dept_id
+);
+```
+
+---
+
+## Quick Reference
+
+| Concept | What it does |
+|---|---|
+| INNER JOIN | Only matching rows from both tables |
+| LEFT JOIN | All left rows + matched right |
+| RIGHT JOIN | All right rows + matched left |
+| SELF JOIN | Table joined with itself |
+| CROSS JOIN | Every combination of both tables |
+| UNION | Combine results, remove duplicates |
+| UNION ALL | Combine results, keep duplicates |
+| Subquery in WHERE | Filter using a computed value |
+| Subquery in FROM | Use query result as a temp table |
+| EXISTS | Check if any matching row exists |
+
+---
+
+*Day X of my SQL learning journey — more coming tomorrow!*
