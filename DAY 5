@@ -1,0 +1,27 @@
+What is a Trigger?
+A Trigger is a special stored procedure in SQL that automatically executes when a specific event occurs on a table or view.
+It is event-driven — fires on INSERT, UPDATE, or DELETE
+It does not need to be called manually
+It runs silently in the background
+Type
+When It Fires
+BEFORE INSERT
+Before a new row is added
+AFTER INSERT
+After a new row is added
+BEFORE UPDATE
+Before a row is modified
+AFTER UPDATE
+After a row is modified
+BEFORE DELETE
+Before a row is removed
+AFTER DELETE
+After a row is removed
+syntax:
+CREATE TRIGGER trigger_name
+{BEFORE | AFTER} {INSERT | UPDATE | DELETE}
+ON table_name
+FOR EACH ROW
+BEGIN
+    -- trigger body / SQL logic
+END;
